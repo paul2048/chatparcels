@@ -1,0 +1,213 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <div class="row" id="all-conts">
+        <div class="col" id="servers-cont">
+            <div class="server-circle selected-server" id="user-circle" data-name="{{ session['username'] }}"></div>
+
+            <hr>
+
+            {% for server in servers %}
+                <img class="server-circle" src="{{ server_imgs[server['id']] }}" data-name="{{ server['name'] }}">
+            {% endfor %}
+
+            <div class="server-circle" id="add-server">
+                <div>+</div>
+            </div>
+        </div>
+
+        <div class="col" id="profile-cont">
+            <div class="cont-head">Profile</div>
+            <div class="cont-body"></div>
+        </div>
+
+        <div class="col" id="settings-cont">
+            <div class="cont-head">Settings</div>
+            <div class="cont-body">
+                <h3>Servers that you are a member of</h3>
+                <div id="joined-servers"></div>
+            </div>
+        </div>
+        
+        <div class="col" id="rooms-users-cont">
+            <div class="row">
+                <div class="col-12" id="rooms-cont">
+                    <div class="cont-head">
+                        Rooms
+                        <div id="add-room">
+                            <div>+</div>
+                        </div>
+                    </div>
+
+                    <div class="cont-body"></div>
+                </div>
+
+                <div class="col-12" id="users-cont">
+                    <div class="cont-head">
+                        Members
+                        <div id="add-user">
+                            <div>+</div>
+                        </div>
+                    </div>
+
+                    <div class="cont-body"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col" id="texts-cont">
+            <div class="cont-head">Chat</div>
+            <div class="cont-body">
+                <div id="chat-area" data-loading="no"></div>
+
+                <form id="chat-form" method="POST">
+                    <hr>
+
+                    <input class="form-control" type="text" name="text" placeholder="Start chatting..." autocomplete="off">
+                </form>
+            </div>
+        </div>
+
+        <!-- Add server modal -->
+        <div class="modal" id="add-server-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">ADD A SERVER</h3>
+        
+                        <div>
+                            <div>
+                                <h4 class="text-center text-primary">CREATE</h4>
+                                <p>Create a new server and add friends.</p>
+                                <button class="btn btn-primary btn-block" id="create-server-btn">Create a server</button>
+                            </div>
+        
+                            <div>
+                                <h4 class="text-center text-success">JOIN</h4>
+                                <p>Join a server if that is open to everybody.</p>
+                                <button class="btn btn-success btn-block" id="join-server-btn">Join a server</button>
+                            </div>
+                        </div>
+
+                        <div id="add-server-form-cont"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add room modal -->
+        <div class="modal" id="add-room-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">ADD A ROOM TO THIS SERVER</h3>
+        
+                        <form class="static_modal_forms" id="add-room-form" method="POST">
+                            <div class="form-group">
+                                <label for="room-name-inp">Room name</label>
+                                <input class="form-control" id="room-name-inp" name="room-name" type="text" autocomplete="off"
+                                    autofocus>
+                            </div>
+        
+                            <div class="form-group">
+                                <input class="btn btn-block btn-primary" type="submit" value="CREATE THE ROOM">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add user modal -->
+        <div class="modal" id="add-user-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">ADD A USER TO THIS SERVER</h3>
+        
+                        <form class="static_modal_forms" id="add-user-form" method="POST">
+                            <div class="form-group">
+                                <label for="username-inp">Username</label>
+                                <input class="form-control" id="username-inp" name="username" type="text" autocomplete="off"
+                                    autofocus>
+                            </div>
+        
+                            <div class="form-group">
+                                <input class="btn btn-block btn-success" type="submit" value="ADD THE USER">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete server modal -->
+        <div class="modal" id="del-server-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">DELETE SERVER</h3>
+        
+                        <p>Are you sure you want to delete this server? You won't be able to recover it.</p>
+
+                        <form class="static_modal_forms" id="del-server-form" method="POST">
+                            <input class="btn btn-danger btn-block" type="submit" value="YES">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leave server modal -->
+        <div class="modal" id="leave-server-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">LEAVE SERVER</h3>
+        
+                        <p>Are you sure you want to leave this server?</p>
+                        
+                        <form class="static_modal_forms" id="leave-server-form" method="POST">
+                            <input class="btn btn-danger btn-block" type="submit" value="YES">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open server modal -->
+        <div class="modal" id="open-server-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">OPEN SERVER</h3>
+        
+                        <p>Are you sure you want to open this server?</p>
+        
+                        <form class="static_modal_forms" id="open-server-form" method="POST">
+                            <input class="btn btn-primary btn-block" type="submit" value="YES">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Close server modal -->
+        <div class="modal" id="close-server-modal">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body">
+                        <h3 class="text-center">CLOSE SERVER</h3>
+        
+                        <p>Are you sure you want to close this server?</p>
+        
+                        <form class="static_modal_forms" id="close-server-form" method="POST">
+                            <input class="btn btn-warning btn-block" type="submit" value="YES">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

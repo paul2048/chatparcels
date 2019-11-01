@@ -1,0 +1,410 @@
+// Hides the scrollbar
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+body {
+    overflow-x: hidden;
+    color: var(--light) !important;
+    background: url("images/bg.png") center;
+    background-size: cover;
+}
+
+#logreg-cont {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#logreg-form-cont {
+    border-radius: 8px;
+    padding: 30px 40px 10px;
+    box-shadow: 0 2px 10px 4px rgba(0, 0, 0, .4);
+    width: 450px;
+    // Make the form responsive
+    min-width: 280px;
+    max-width: 100%;
+
+    h1 {
+        font-family: "Lobster", cursive;
+        text-align: center;
+        color: #3a7bbc;
+        user-select: none;
+        margin: 10px 0 20px;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+        span {
+            border: 10px solid #3a7bbc;
+            border-radius: 8px;
+            padding: 0 5px;
+            box-shadow: 0 2px 10px 4px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    a {
+        color: var(--info);
+    }
+}
+
+// Style the inputs except for the submit ones
+input:not([type=submit]) {
+    background: rgba(0, 0, 0, .2) !important;
+    color: var(--light) !important;
+    border: none;
+}
+
+input[type=submit] {
+    text-transform: capitalize;
+}
+
+#form-replacer {
+    margin-top: -5px;
+}
+
+#img-credits {
+    position: absolute;
+    bottom: 10px;
+}
+
+
+/* THE MAIN PAGE */
+
+#all-conts {
+    flex-wrap: nowrap;
+
+    .modal {
+        color: var(--light) !important;
+        background: rgba(0, 0, 0, .6);
+    }
+
+    // The "div"s that contains the "CREATE" and "JOIN" buttons
+    #add-server-modal .modal-body > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        >div {
+            width: 45.71%;
+            background: rgba(0, 0, 0, .2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        form {
+            width: 100%;
+        }
+    }
+}
+
+#servers-cont {
+    flex: 0 0 120px;
+    background: #343a40;
+
+    hr {
+        height: 5px;
+        width: 50px;
+        background: rgba(0, 0, 0, .2);
+        border: none;
+    }
+}
+
+#servers-cont, #rooms-cont .cont-body, #profile-cont,
+#settings-cont, #users-cont .cont-body, #texts-cont {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.server-circle, #add-room, #add-user {
+    width: 90px;
+    height: 90px;
+    margin: 8px 0 0;
+    border-radius: 50%;
+    text-align: center;
+    background: #292c2f;
+    background-size: cover !important;
+    cursor: pointer;
+    transition: .2s;
+
+    // The "+"
+    >div {
+        color: #3a7bbc;
+        font-family: Arial, Helvetica;
+        font-size: 70px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        user-select: none;
+    }
+
+    &:hover {
+        border-radius: 25% !important;
+        background: #3a7bbc;
+
+        div {
+            color: #292c2f;
+        }
+    }
+}
+
+.server-circle {
+    user-select: none;
+
+    // All the server circles except the last one
+    &:hover:not(:last-child):after {
+        // "attr" gets attributes of this element
+        content: attr(data-name);
+        background: rgb(28, 29, 28);
+        border-radius: 8px;
+        padding: 5px;
+        position: absolute;
+        left: 100%;
+        margin-top: 32px;
+        z-index: 999;
+    }
+}
+
+#user-circle {
+    background: url("images/users_pics/default.jpg") !important;
+    background-size: cover !important;
+}
+
+// The user's profile circle
+#user-circle:hover:after {
+    content: attr(data-name);
+}
+
+.selected-server {
+    border-radius: 25%;
+    box-shadow: 0px 0px 1px 4px rgba(23, 23, 23, 0.5);
+}
+
+#profile-cont {
+    flex: 0 0 350px;
+    max-width: 350px;
+
+    img {
+        width: 260px;
+        height: 260px;
+        border-radius: 5%;
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 1px 4px rgba(23, 23, 23, 0.5);
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+#profile-cont, #settings-cont, #servers-cont, #texts-cont {
+    height: 100vh;
+}
+
+
+#profile-cont .cont-body, #settings-cont .cont-body > * {
+    margin: 20px 20px 0 20px;
+}
+
+#profile-cont, #settings-cont, #rooms-cont,
+#users-cont, #texts-cont {
+    padding: 0;
+}
+
+#profile-cont, #rooms-cont, #users-cont {
+    background: #272b2f;
+    width: 50vh;
+}
+
+#settings-cont .cont-body {
+    overflow: hidden auto;
+    height: 92vh;
+}
+
+/* Make the containers of the servers the
+   user is a member of, more responsive */
+@media (min-width: 1150px) {
+    #joined-servers {
+        margin: 0 30px !important;
+    }
+}
+
+.joined-server {
+    background: rgba(23, 23, 23, 0.37);
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 20px;
+    cursor: pointer;
+    transition: .2s;
+
+    &:hover {
+        background: rgba(23, 23, 23, 0.5);
+    }
+
+    .btn-link {
+        margin-top: -3px;
+    }
+
+    .btn-success, .btn-danger {
+        margin-top: 5px;
+    }
+}
+
+#rooms-users-cont {
+    flex: 0 0 350px;
+    max-width: 350px;
+    display: none;
+}
+
+#rooms-cont, #users-cont {
+    height: 50vh;
+    display: flex; // Fixes ".room" and ".user" sticking out
+    flex-direction: column;
+    transition: .2s;
+}
+
+#texts-cont, #settings-cont {
+    background: #343a40;
+}
+
+#texts-cont {
+    display: none;
+}
+
+#chat-area, #texts-cont form {
+    margin: 0 20px;
+}
+  
+#chat-area {
+    height: 80vh;
+    overflow: hidden auto;
+}
+
+@keyframes loading-sign {
+    0% {
+        border: 0px;
+    }
+    70% {
+        margin-top: -10px;
+        border: 30px solid #bc3a3a;
+    }
+    100% {
+        border: 0px;
+        background: #3a7bbc;
+    }
+}
+
+// The red-blue circle 
+.loading-sign {
+    width: 50px;
+    height: 50px;
+    background: #3a7bbc;
+    border-radius: 50%;
+    animation: loading-sign 1.2s infinite;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+// The container (at the top of the chat area)
+// of the red-blue circle
+.new-messages-cont {
+    height: 70px;
+    position: relative;
+
+    .loading-sign {
+        top: 20px;
+    }
+}
+
+// If there are no rooms or messages in the containers
+.empty-cont {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#texts-cont form {
+    hr {
+        height: 3px;
+        background: rgba(0, 0, 0, .2);
+        border: none;
+    }
+}
+
+// The 3 dark container headers
+.cont-head {
+    background: rgba(23, 23, 23, 0.37);
+    padding: 16px;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+// The add room and add user buttons
+#add-room, #add-user {
+    width: 26px;
+    height: 26px;
+    float: right;
+    margin-top: -3px;
+    
+    >div {
+        font-size: 30px;
+    }
+}
+
+.user img, .chat-block img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    user-select: none;
+}
+
+.room, .user {
+    cursor: pointer;
+    padding: 15px;
+
+    &:nth-last-child(2n - 1) {
+        background: #292d31;
+    }
+
+    &:hover {
+        background: #3a7bbc;
+        color: #292c2f !important;
+        transition: .2s;
+    }
+}
+
+.selected-room {
+    color: #3a7bbc;
+    font-weight: bold;
+}
+
+@keyframes message-fade {
+    0% {
+        opacity: 0;
+        margin-left: -5px;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 0;
+    }
+}
+
+// Each block contains username, avatar, message, timestamp
+.chat-block {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    animation: message-fade .75s forwards;
+}
